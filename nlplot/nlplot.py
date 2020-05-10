@@ -30,7 +30,7 @@ import networkx as nx
 from networkx.algorithms import community
 
 file_path = os.path.dirname(__file__)
-TTF_FILE_NAME = os.path.join(file_path, '/data/mplus-1c-regular.ttf')
+TTF_FILE_NAME = str(file_path) + '/data/mplus-1c-regular.ttf'
 
 
 def get_colorpalette(colorpalette, n_colors) -> list:
