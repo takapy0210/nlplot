@@ -1,11 +1,8 @@
-import os, sys
+import os
 from setuptools import setup, find_packages
 
-with open('README.md') as f:
-    readme = f.read()
-
-with open('LICENSE.txt') as f:
-    license = f.read()
+with open('README.md', 'r', encoding='utf-8') as f:
+    long_description = f.read()
 
 
 def read_requirements():
@@ -18,24 +15,16 @@ def read_requirements():
 
 setup(
     name='nlplot',
-    version='1.0.0',
+    version='1.0.1',
     description='Visualization Module for Natural Language Processing',
-    long_description=readme,
-    long_description_content_type='text/markdowm',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Takanobu Nozawa',
     author_email='takanobu.030210@gmail.com',
     url='https://github.com/takapy0210/nlplot',
-    license=license,
+    license='MIT License',
     install_requires=read_requirements(),
     packages=find_packages(exclude=('tests')),
     package_data={'nlplot':['data/*']},
-    python_requires='~=3.6',
-    classifiers=[
-        'License::OSIApproved::MITLicense',
-        'ProgrammingLanguage::Python::3',
-        'ProgrammingLanguage::Python::3.6',
-        'ProgrammingLanguage::Python::3.7',
-        'ProgrammingLanguage::Python::3.8',
-        'OperatingSystem::OSIndependent',
-    ],
+    python_requires='~=3.6'
 )
