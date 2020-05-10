@@ -1,19 +1,10 @@
-"""Visualization Module for Natural Language Processing
+"""Visualization Module for Natural Language Processing"""
 
-Todo:
-    TODO:
-    * create markdown for get started
-    * hoge
-
-Examples:
-
-"""
-
+import os
+import gc
 import pandas as pd
 import numpy as np
 import itertools
-import os
-import gc
 import multiprocessing
 from collections import defaultdict, Counter
 from tqdm import tqdm
@@ -28,7 +19,6 @@ import pyLDAvis.gensim
 pyLDAvis.enable_notebook()
 
 import seaborn as sns
-import plotly
 import plotly.graph_objs as go
 import plotly.express as px
 from plotly.offline import iplot
@@ -42,20 +32,41 @@ from networkx.algorithms import community
 TTF_FILE_NAME = 'mplus-1c-regular.ttf'
 
 
-def get_colorpalette(colorpalette, n_colors):
-    """Get a color palette"""
-    palette = sns.color_palette(
-        colorpalette, n_colors)
+def get_colorpalette(colorpalette, n_colors) -> list:
+    """Get a color palette
+
+    Args:
+        colorpalette (str): cf.https://qiita.com/SaitoTsutomu/items/c79c9973a92e1e2c77a7
+        n_colors (int): Number of colors to be displayed
+
+    Returns:
+            list: List of RGB
+
+    """
+    palette = sns.color_palette(colorpalette, n_colors)
     rgb = ['rgb({},{},{})'.format(*[x*256 for x in rgb]) for rgb in palette]
     return rgb
 
 
 def freq_df(df_value, n_gram=1, n=50, stopwords=[], verbose=True):
-    """Create a data frame of frequent word"""
+    """Create a data frame of frequent word
 
-    # Function to create a list of n-grams
+    Args:
+        df_value (pd.Series): Separated by space values
+        stopwords (list): A list of words to specify for the stopword
+        n_gram (int): N number of N grams
+        n (int): How many words should be output
+        verbose (bool): Whether or not to output the log by tqdm
+
+    Returns:
+            list: List of RGB
+
+    """
+
     def generate_ngrams(text, n_gram=1):
-        token = [token for token in text.lower().split(" ") if token != "" if token not in stopwords]
+        """Function to create a list of n-grams"""
+        token = [token for token in text.lower().split(" ")
+                 if token != "" if token not in stopwords]
         ngrams = zip(*[token[i:] for i in range(n_gram)])
         return [" ".join(ngram) for ngram in ngrams]
 
@@ -69,7 +80,8 @@ def freq_df(df_value, n_gram=1, n=50, stopwords=[], verbose=True):
             for word in generate_ngrams(str(sent), n_gram=n_gram):
                 freq_dict[word] += 1
 
-    fd_sorted = pd.DataFrame(sorted(freq_dict.items(), key=lambda x: x[1])[::-1])
+    fd_sorted = pd.DataFrame(sorted(freq_dict.items(),
+                             key=lambda x: x[1])[::-1])
     fd_sorted.columns = ['word', 'word_count']
     return fd_sorted.head(n)
 
@@ -80,18 +92,21 @@ class NLPlot():
     Attributes:
         df (pd.DataFrame): Original data frame to be graphed
         taget_col: Columns to be analyzed that exist in df (assuming type list) e.g. [hoge, fuga, ...]
-        html_file_path: path to save the html file of the generated graph
+        output_file_path: path to save the html file of the generated graph
         default_stopwords_file_path: The path to the file that defines the default stopword
+
     """
 
-    def __init__(self, df, taget_col, html_file_path='./', default_stopwords_file_path=''):
+    def __init__(self, df, taget_col, output_file_path='./',
+                 default_stopwords_file_path=''):
         """init"""
         self.df = df
         self.taget_col = taget_col
         self.df.dropna(subset=[self.taget_col], inplace=True)
-        self.df[self.taget_col] = self.df[self.taget_col].map(lambda x: x.split())
+        if type(self.df[self.taget_col].iloc[0]) is not list:
+            self.df[self.taget_col] = self.df[self.taget_col].map(lambda x: x.split())
         self.df[self.taget_col + '_length'] = self.df[self.taget_col].map(lambda x: len(x))
-        self.html_file_path = html_file_path
+        self.output_file_path = output_file_path
         self.default_stopwords = []
         if os.path.exists(default_stopwords_file_path):
             f = open(default_stopwords_file_path)
@@ -106,7 +121,6 @@ class NLPlot():
         and the words that occur only below the bottom_n as stopwords.
 
         Args:
-            docs (list or Series of str): docs (split space)
             top_n (int): Top N of the number of occurrences of words to exclude
             bottom_n (int): Bottom of the number of occurrences of words to exclude
 
@@ -120,23 +134,35 @@ class NLPlot():
         for doc in self.df[self.taget_col]:
             for word in doc:
                 fdist[word] += 1
-        common_words = {word for word, freq in fdist.most_common(top_n)}  # 出現回数の多い単語
-        rare_words = {word for word, freq in fdist.items() if freq <= bottom_n}  # 出現回数の少ない単語
+        # word with a high frequency
+        common_words = {word for word, freq in fdist.most_common(top_n)}
+        # word with a low frequency
+        rare_words = {word for word, freq in fdist.items() if freq <= bottom_n}
         stopwords = list(common_words.union(rare_words))
         return stopwords
 
     def bar_ngram(self, stopwords=[], title=None,
                   xaxis_label='', yaxis_label='',
-                  ngram=1, top_n=50, width=800, height=1500,
-                  color=None, horizon=True, verbose=True, save=False) -> None:
+                  ngram=1, top_n=50, width=800, height=1100,
+                  color=None, horizon=True, verbose=True, save=False) -> px.bar:
         """Plots of n-gram bar chart
 
         Args:
             stopwords (list): A list of words to specify for the stopword.
             title (str): title of plot
-            gram (int): N number of N grams
+            xaxis_label (str): x-axis label name
+            yaxis_label (str): y-axis label name
+            ngram (int): N number of N grams
             top_n (int): How many words should be output
+            width (int): width of the graph
+            height (int): height of the graph
+            color (str): color of the chart
+            horizon (bool): To create a horizontal bar graph, use the True
+            verbose (bool): Whether or not to output the log by tqdm
             save (bool): Whether or not to save the HTML file.
+
+        Returns:
+            px.bar: Figure of a bar graph
 
         """
 
@@ -146,7 +172,8 @@ class NLPlot():
         _df['space'] = self.df[self.taget_col].apply(lambda x: ' '.join(x))
 
         # word count
-        _df = freq_df(_df['space'], n_gram=ngram, n=top_n, stopwords=stopwords, verbose=verbose)
+        _df = freq_df(_df['space'], n_gram=ngram, n=top_n,
+                      stopwords=stopwords, verbose=verbose)
 
         if horizon:
             fig = px.bar(
@@ -172,18 +199,32 @@ class NLPlot():
             yaxis_title=str(yaxis_label),
             width=width,
             height=height,)
-        fig.show()
 
         if save:
             self.save_plot(fig, title)
 
         del _df
         gc.collect()
-        return None
+        return fig
 
     def treemap(self, stopwords=[], title=None, ngram=1, top_n=50,
-                width=800, height=1500, verbose=True, save=False) -> None:
-        """Plots of Tree Map"""
+                width=1300, height=600, verbose=True, save=False) -> px.treemap:
+        """Plots of Tree Map
+
+        Args:
+            stopwords (list): A list of words to specify for the stopword
+            title (str): title of plot
+            ngram (int): N number of N grams
+            top_n (int): How many words should be output
+            width (int): width of the graph
+            height (int): height of the graph
+            verbose (bool): Whether or not to output the log by tqdm
+            save (bool): Whether or not to save the HTML file.
+
+        Returns:
+            px.treemap: Figure of a treemap graph
+
+        """
 
         stopwords += self.default_stopwords
 
@@ -191,7 +232,8 @@ class NLPlot():
         _df['space'] = self.df[self.taget_col].apply(lambda x: ' '.join(x))
 
         # word count
-        _df = freq_df(_df['space'], n_gram=ngram, n=top_n, stopwords=stopwords, verbose=verbose)
+        _df = freq_df(_df['space'], n_gram=ngram, n=top_n,
+                      stopwords=stopwords, verbose=verbose)
 
         fig = px.treemap(
             _df,
@@ -203,50 +245,72 @@ class NLPlot():
             width=width,
             height=height,
         )
-        fig.show()
 
         if save:
             self.save_plot(fig, title)
 
         del _df
-        return None
+        gc.collect()
+        return fig
 
     def word_distribution(self, title=None,
                           xaxis_label='', yaxis_label='',
-                          width=1000, height=500,
-                          color=None, template='plotly', bins=None, save=False) -> None:
+                          width=1000, height=600,
+                          color=None, template='plotly',
+                          bins=None, save=False) -> px.histogram:
         """Plots of word count histogram
 
         Args:
-            title (str): グラフのタイトル
-            x_axis (str): x軸に指定するカラム
-            x_label (str): 図形のx軸に設定するカラム名
-            x_date (bool): x_axisがDate型の時にTrueとすると、YYYY-MM-DD表記になる
-            save (bool): 図形をhtml形式で保存するか否か
-            template (str): plotlyの描画スタイル
+            title (str): title of plot
+            xaxis_label (str): x-axis label name
+            yaxis_label (str): y-axis label name
+            width (int): width of the graph
+            height (int): height of the graph
+            color (str): color of the chart
+            template (str): The plotly drawing style
+            bins (int): Number of bins
+            save (bool): Whether or not to save the HTML file.
+
+        Returns:
+            px.histogram: Figure of a bar graph
 
         """
         _df = self.df.copy()
-        fig = px.histogram(_df, x=self.taget_col+'_length', color=color, template=template, nbins=bins)
+        fig = px.histogram(_df, x=self.taget_col+'_length',
+                           color=color, template=template, nbins=bins)
         fig.update_layout(
             title=str(title),
             xaxis_title=str(xaxis_label),
             yaxis_title=str(yaxis_label),
             width=width,
-            height=height)
-
-        fig.show()
+            height=height,)
 
         if save:
             self.save_plot(fig, title)
 
         del _df
-        return None
+        gc.collect()
+        return fig
 
     def wordcloud(self, stopwords=[], width=800, height=500,
                   max_words=100, max_font_size=80,
-                  colormap=None, mask_file=None, save=False):
-        """Plots of WordCloud"""
+                  colormap=None, mask_file=None, save=False) -> None:
+        """Plots of WordCloud
+
+        Args:
+            stopwords (list): A list of words to specify for the stopword.
+            width (int): width of the graph
+            height (int): height of the graph
+            max_words: Number of words to display
+            max_font_size: Size of words to be displayed
+            colormap (str): cf.https://karupoimou.hatenablog.com/entry/2019/05/17/153207
+            mask_file (str): Image to be masked file
+            save (bool): Whether or not to save the Image file.
+
+        Returns:
+            None
+
+        """
 
         f_path = TTF_FILE_NAME
         if mask_file is not None:
@@ -281,7 +345,8 @@ class NLPlot():
             if save:
                 Image.fromarray(img).save('wordcloud.png')
             Image.fromarray(img).save(stream, 'png')
-            IPython.display.display(IPython.display.Image(data=stream.getvalue()))
+            IPython.display.display(IPython.display.
+                                    Image(data=stream.getvalue()))
 
         img = wordcloud.to_array()
         show_array(img)
@@ -295,25 +360,29 @@ class NLPlot():
 
         Args:
             batches (list): array of word lists
-            min_edge_frequency (int): Minimum number of edge occurrences. Edges less than this number will be removed.
+            min_edge_frequency (int): Minimum number of edge occurrences.
+                                      Edges less than this number will be removed.
 
         Returns:
             None
 
         """
 
-        # sort function
         def _ranked_topics(batches):
+            """sort function"""
             batches.sort()
             return batches
 
-        # craeted unique combinations
-        # e.g. [('hoge1', 'hoge2'), ('hoge1', 'hoge3'), ...]
         def _unique_combinations(batches):
+            """craeted unique combinations
+
+                e.g. [('hoge1', 'hoge2'), ('hoge1', 'hoge3'), ...]
+
+            """
             return list(itertools.combinations(_ranked_topics(batches), 2))
 
-        # Calculate how many times the combination appears and store it in a dictionary
         def _add_unique_combinations(_unique_combinations, _dict):
+            """Calculate how many times the combination appears and store it in a dictionary"""
             for combination in _unique_combinations:
                 if combination in _dict:
                     _dict[combination] += 1
@@ -412,7 +481,7 @@ class NLPlot():
                 try:
                     words.remove(stop_word)
                     words = words
-                except:
+                except Exception:
                     pass
             return words
         batch = self.target[self.taget_col].map(_removestop)
@@ -422,7 +491,6 @@ class NLPlot():
         self.get_edges_nodes(batches, min_edge_frequency)
 
         # create adjacency, centrality, cluster
-        # ref:
         # https://networkx.github.io/documentation/stable/reference/classes/generated/networkx.Graph.adjacency.html?highlight=adjacency#networkx.Graph.adjacency
         # https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.algorithms.centrality.betweenness_centrality.html#betweenness-centrality
         # https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.algorithms.cluster.clustering.html?highlight=clustering#clustering
@@ -435,7 +503,7 @@ class NLPlot():
         self.node_df['clustering_coefficient'] = self.node_df['id_code'].map(lambda x: self.clustering_coeff[x])
 
         # create community
-        # ref: https://networkx.github.io/documentation/stable/reference/algorithms/community.html#module-networkx.algorithms.community.modularity_max
+        # https://networkx.github.io/documentation/stable/reference/algorithms/community.html#module-networkx.algorithms.community.modularity_max
         self.communities = community.greedy_modularity_communities(self.G)
         self.communities_dict = {}
         nodes_in_community = [list(i) for i in self.communities]
@@ -449,13 +517,29 @@ class NLPlot():
 
         self.node_df['community'] = self.node_df['id_code'].map(lambda x: community_allocation(x))
 
+        print('node_size:{}, edge_size:{}'.format(self.node_df.shape[0], self.edge_df.shape[0]))
+
         return None
 
     def co_network(self, title, sizing=100, node_size='adjacency_frequency',
                    color_palette='hls', layout=nx.kamada_kawai_layout,
                    light_theme=True, width=1700, height=1200, save=False) -> None:
         """Plots of co-occurrence networks
-        color_palette:https://qiita.com/SaitoTsutomu/items/c79c9973a92e1e2c77a7
+
+        Args:
+            title (str): title of plot
+            sizing (int): Size of the maker
+            node_size (str): Column name to specify the size of the node
+            color_palette (str): cf.https://qiita.com/SaitoTsutomu/items/c79c9973a92e1e2c77a7
+            layout : nx.kamada_kawai_layout
+            light_theme (bool): True if you want a light theme.
+            width (int): width of the graph
+            height (int): height of the graph
+            save (bool): Whether or not to save the HTML file.
+
+        Returns:
+            None
+
         """
 
         # formatting options for plot - dark vs. light theme
@@ -572,8 +656,22 @@ class NLPlot():
         gc.collect()
         return None
 
-    def sunburst(self, title, colorscale=False, color_col='betweeness_centrality', width=1300, height=1300, save=False) -> None:
+    def sunburst(self, title, colorscale=False, color_col='betweeness_centrality',
+                 color_continuous_scale='Oryel', width=1100, height=1100, save=False) -> px.sunburst:
         """Plots of sunburst chart
+
+        Args:
+            title (str): title of plot
+            colorscale (bool): Size of the maker
+            color_col (str): Color-coded column names.
+            color_continuous_scale (str): cf.https://plotly.com/python/builtin-colorscales/
+            width (int): width of the graph
+            height (int): height of the graph
+            save (bool): Whether or not to save the HTML file.
+
+        Returns:
+            px.sunburst: Figure of a sunburst graph
+
         """
 
         # make copy of node dataframe
@@ -587,10 +685,9 @@ class NLPlot():
             fig = px.sunburst(_df, path=['community', 'id'], values='adjacency_frequency',
                               color='community', hover_name=None, hover_data=None)
         else:
-            # color scale:https://plotly.com/python/builtin-colorscales/
             fig = px.sunburst(_df, path=['community', 'id'], values='adjacency_frequency',
                               color=color_col, hover_data=None,
-                              color_continuous_scale='Oryel',
+                              color_continuous_scale=color_continuous_scale,
                               color_continuous_midpoint=np.average(_df[color_col],
                               weights=_df[color_col]))
 
@@ -598,19 +695,26 @@ class NLPlot():
             title=str(title),
             width=width,
             height=height,)
-        fig.show()
 
         if save:
             self.save_plot(fig, title)
 
         del _df
         gc.collect()
-        return None
+        return fig
 
     def ldavis(self, num_topics, passes, save=False) -> pyLDAvis:
         """Plots of pyLDAvis
 
-        ref: https://github.com/bmabey/pyLDAvis
+        cf: https://github.com/bmabey/pyLDAvis
+
+        Args:
+            num_topics (int): The number of requested latent topics to be extracted from the training corpus.
+            passes (int): Number of passes through the corpus during training.
+            save (bool): Whether or not to save the HTML file.
+
+        Returns:
+            pyLDAvis: Figure of a pyLDAvis
 
         """
 
@@ -620,6 +724,7 @@ class NLPlot():
         dic = gensim.corpora.Dictionary(self.df[self.taget_col])
         bow_corpus = [dic.doc2bow(doc) for doc in self.df[self.taget_col]]
 
+        # cf. https://radimrehurek.com/gensim/models/ldamodel.html
         lda_model = gensim.models.LdaMulticore(bow_corpus,
                                                num_topics=num_topics,
                                                id2word=dic,
@@ -637,24 +742,30 @@ class NLPlot():
         return vis
 
     def save_plot(self, fig, title) -> None:
+        """Save the HTML file
+
+        Args:
+            fig (fig): Figure to be saved
+            title (str): File name to save
+
+        Returns:
+            None
+
+        """
         date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
         filename = date + '_' + str(title) + '.html'
-        filename = self.html_file_path + filename
-        plotly.offline.plot(fig, filename=filename, auto_open=False)
-        # plotly.offline.plot(plot_save, filename=filename, image_filename=filename, image='jpeg')
+        filename = self.output_file_path + filename
+        fig.write_html(filename, auto_open=False)
         return None
 
     def save_tables(self) -> None:
+        """Storing a data frame"""
 
         date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
-
         self.node_df.to_csv(date + "_node_df_" + self.source + ".csv", index=False)
         print('Saved nodes')
         self.edge_df.to_csv(date + "_edge_df_" + self.source + ".csv", index=False)
         print('Saved edges')
-        self.df_edit.to_csv(date + "_df_edit_" + self.source + ".csv", index=False)
-        print('Saved edited dataframe')
         self.df.to_csv(date + "_df_" + self.source + "_.csv", index=False)
         print('Saved unedited dataframe')
-
         return None

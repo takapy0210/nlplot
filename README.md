@@ -6,15 +6,16 @@ Facilitates the visualization of natural language processing and provides quicke
 
 ## Requirement
 
-- [python package]()
+- [python package](https://github.com/takapy0210/nlplot/blob/master/requirements.txt)
 
 ## Install
 
 ```sh
-
+pip install nlplot
 ```
 
 ## Usage
+TBD
 
 ```python
 
@@ -28,3 +29,7 @@ TBD
 ## Test
 TBD
 
+## Other
+Font is from the following site
+
+- https://mplus-fonts.osdn.jp/about.html

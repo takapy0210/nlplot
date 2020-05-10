@@ -1,2 +1,4 @@
+from nlplot.nlplot import *
+
 def main():
-    print('hello nlplot')
+    pass

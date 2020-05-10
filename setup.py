@@ -24,7 +24,7 @@ setup(
     long_description_content_type='text/markdowm',
     author='Takanobu Nozawa',
     author_email='takanobu.030210@gmail.com',
-    url='https://github.com/takapy0210',
+    url='https://github.com/takapy0210/nlplot',
     license=license,
     install_requires=read_requirements(),
     packages=find_packages(exclude=('tests')),
