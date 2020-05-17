@@ -19,6 +19,7 @@ import pyLDAvis.gensim
 pyLDAvis.enable_notebook()
 
 import seaborn as sns
+import plotly
 import plotly.graph_objs as go
 import plotly.express as px
 from plotly.offline import iplot
@@ -29,8 +30,7 @@ from PIL import Image
 import networkx as nx
 from networkx.algorithms import community
 
-file_path = os.path.dirname(__file__)
-TTF_FILE_NAME = str(file_path) + '/data/mplus-1c-regular.ttf'
+TTF_FILE_NAME = str(os.path.dirname(__file__)) + '/data/mplus-1c-regular.ttf'
 
 
 def get_colorpalette(colorpalette, n_colors) -> list:
@@ -115,15 +115,15 @@ class NLPlot():
             f.close()
             self.default_stopwords = [line.strip() for line in txt_file]
 
-    def get_stopword(self, top_n=10, bottom_n=3) -> list:
+    def get_stopword(self, top_n=10, min_freq=5) -> list:
         """Calculate the stop word.
 
         Calculate the top_n words with the highest number of occurrences
-        and the words that occur only below the bottom_n as stopwords.
+        and the words that occur only below the min_freq as stopwords.
 
         Args:
             top_n (int): Top N of the number of occurrences of words to exclude
-            bottom_n (int): Bottom of the number of occurrences of words to exclude
+            min_freq (int): Bottom of the number of occurrences of words to exclude
 
         Returns:
             list: list of stop words
@@ -138,18 +138,17 @@ class NLPlot():
         # word with a high frequency
         common_words = {word for word, freq in fdist.most_common(top_n)}
         # word with a low frequency
-        rare_words = {word for word, freq in fdist.items() if freq <= bottom_n}
+        rare_words = {word for word, freq in fdist.items() if freq <= min_freq}
         stopwords = list(common_words.union(rare_words))
         return stopwords
 
-    def bar_ngram(self, stopwords=[], title=None,
+    def bar_ngram(self, title=None,
                   xaxis_label='', yaxis_label='',
                   ngram=1, top_n=50, width=800, height=1100,
-                  color=None, horizon=True, verbose=True, save=False) -> px.bar:
+                  color=None, horizon=True, stopwords=[], verbose=True, save=False) -> px.bar:
         """Plots of n-gram bar chart
 
         Args:
-            stopwords (list): A list of words to specify for the stopword.
             title (str): title of plot
             xaxis_label (str): x-axis label name
             yaxis_label (str): y-axis label name
@@ -159,6 +158,7 @@ class NLPlot():
             height (int): height of the graph
             color (str): color of the chart
             horizon (bool): To create a horizontal bar graph, use the True
+            stopwords (list): A list of words to specify for the stopword.
             verbose (bool): Whether or not to output the log by tqdm
             save (bool): Whether or not to save the HTML file.
 
@@ -208,17 +208,17 @@ class NLPlot():
         gc.collect()
         return fig
 
-    def treemap(self, stopwords=[], title=None, ngram=1, top_n=50,
-                width=1300, height=600, verbose=True, save=False) -> px.treemap:
+    def treemap(self, title=None, ngram=1, top_n=50,
+                width=1300, height=600, stopwords=[], verbose=True, save=False) -> px.treemap:
         """Plots of Tree Map
 
         Args:
-            stopwords (list): A list of words to specify for the stopword
             title (str): title of plot
             ngram (int): N number of N grams
             top_n (int): How many words should be output
             width (int): width of the graph
             height (int): height of the graph
+            stopwords (list): A list of words to specify for the stopword
             verbose (bool): Whether or not to output the log by tqdm
             save (bool): Whether or not to save the HTML file.
 
@@ -293,17 +293,17 @@ class NLPlot():
         gc.collect()
         return fig
 
-    def wordcloud(self, stopwords=[], width=800, height=500,
-                  max_words=100, max_font_size=80,
+    def wordcloud(self, width=800, height=500,
+                  max_words=100, max_font_size=80, stopwords=[],
                   colormap=None, mask_file=None, save=False) -> None:
         """Plots of WordCloud
 
         Args:
-            stopwords (list): A list of words to specify for the stopword.
             width (int): width of the graph
             height (int): height of the graph
             max_words: Number of words to display
             max_font_size: Size of words to be displayed
+            stopwords (list): A list of words to specify for the stopword.
             colormap (str): cf.https://karupoimou.hatenablog.com/entry/2019/05/17/153207
             mask_file (str): Image to be masked file
             save (bool): Whether or not to save the Image file.
@@ -756,7 +756,7 @@ class NLPlot():
         date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
         filename = date + '_' + str(title) + '.html'
         filename = self.output_file_path + filename
-        fig.write_html(filename, auto_open=False)
+        plotly.offline.plot(fig, filename=filename, auto_open=False)
         return None
 
     def save_tables(self) -> None:
