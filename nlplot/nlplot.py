@@ -17,7 +17,7 @@ warnings.simplefilter('ignore')
 
 import gensim
 import pyLDAvis.gensim
-if not is_notebook():
+if is_notebook():
     pyLDAvis.enable_notebook()
 
 import seaborn as sns
