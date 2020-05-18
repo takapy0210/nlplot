@@ -9,6 +9,7 @@ import multiprocessing
 from collections import defaultdict, Counter
 from tqdm import tqdm
 from sklearn import preprocessing
+from .helper import is_notebook
 import datetime as datetime
 import warnings
 warnings.filterwarnings('ignore')
@@ -16,7 +17,8 @@ warnings.simplefilter('ignore')
 
 import gensim
 import pyLDAvis.gensim
-pyLDAvis.enable_notebook()
+if not is_notebook():
+    pyLDAvis.enable_notebook()
 
 import seaborn as sns
 import plotly
