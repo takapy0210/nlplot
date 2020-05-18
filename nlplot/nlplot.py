@@ -10,6 +10,7 @@ from collections import defaultdict, Counter
 from tqdm import tqdm
 from sklearn import preprocessing
 import datetime as datetime
+import itertools
 import warnings
 warnings.filterwarnings('ignore')
 warnings.simplefilter('ignore')
@@ -339,7 +340,7 @@ class NLPlot():
                         collocations=False,
                         prefer_horizontal=1,
                         colormap=colormap)
-        wordcloud.generate(str(text))
+        wordcloud.generate(' '.join(list(itertools.chain(*list(text)))))
 
         def show_array(img):
             stream = BytesIO()
