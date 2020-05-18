@@ -17,7 +17,6 @@ warnings.simplefilter('ignore')
 
 import gensim
 import pyLDAvis.gensim
-pyLDAvis.enable_notebook()
 
 import seaborn as sns
 import plotly
