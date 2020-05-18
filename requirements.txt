@@ -9,3 +9,4 @@ plotly
 wordcloud
 pillow
 networkx
+ipython
