@@ -10,7 +10,6 @@ from collections import defaultdict, Counter
 from tqdm import tqdm
 from sklearn import preprocessing
 import datetime as datetime
-import itertools
 import warnings
 warnings.filterwarnings('ignore')
 warnings.simplefilter('ignore')
