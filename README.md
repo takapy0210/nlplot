@@ -89,7 +89,10 @@ npt.ldavis(num_topics=5, passes=5, save=False)
 TBD
 
 ## Test
-TBD
+```sh
+cd tests
+pytest
+```
 
 ## Other
 

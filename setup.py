@@ -15,7 +15,7 @@ def read_requirements():
 
 setup(
     name='nlplot',
-    version='1.1.1',
+    version='1.2.0',
     description='Visualization Module for Natural Language Processing',
     long_description=long_description,
     long_description_content_type='text/markdown',
