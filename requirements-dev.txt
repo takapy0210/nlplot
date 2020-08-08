@@ -10,3 +10,4 @@ wordcloud
 pillow
 networkx
 ipython
+pytest
