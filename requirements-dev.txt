@@ -1,0 +1,12 @@
+pandas
+numpy
+tqdm
+sklearn
+gensim
+pyLDAvis
+seaborn
+plotly
+wordcloud
+pillow
+networkx
+ipython
