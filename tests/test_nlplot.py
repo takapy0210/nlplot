@@ -17,7 +17,7 @@ def prepare_data():
 
 @pytest.fixture
 def prepare_instance(prepare_data):
-    npt = NLPlot(prepare_data, taget_col="text")
+    npt = NLPlot(prepare_data, target_col="text")
     return npt
 
 
