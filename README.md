@@ -44,8 +44,8 @@ df.head()
 ```python
 import nlplot
 
-# taget_col as a list type or a string separated by a space.
-npt = nlplot.NLPlot(df, taget_col='text')
+# target_col as a list type or a string separated by a space.
+npt = nlplot.NLPlot(df, target_col='text')
 
 # 1. N-gram bar chart
 npt.bar_ngram(title='uni-gram', ngram=1, top_n=50)
