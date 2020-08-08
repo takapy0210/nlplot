@@ -9,6 +9,7 @@ import multiprocessing
 from collections import defaultdict, Counter
 from tqdm import tqdm
 from sklearn import preprocessing
+from .helper import is_notebook
 import datetime as datetime
 
 import seaborn as sns
@@ -24,7 +25,8 @@ import networkx as nx
 from networkx.algorithms import community
 import gensim
 import pyLDAvis.gensim
-pyLDAvis.enable_notebook()
+if is_notebook():
+    pyLDAvis.enable_notebook()
 
 TTF_FILE_NAME = str(os.path.dirname(__file__)) + '/data/mplus-1c-regular.ttf'
 
