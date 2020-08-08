@@ -11,15 +11,6 @@ from tqdm import tqdm
 from sklearn import preprocessing
 from .helper import is_notebook
 import datetime as datetime
-import itertools
-import warnings
-warnings.filterwarnings('ignore')
-warnings.simplefilter('ignore')
-
-import gensim
-import pyLDAvis.gensim
-if is_notebook():
-    pyLDAvis.enable_notebook()
 
 import seaborn as sns
 import plotly
@@ -32,6 +23,10 @@ from io import BytesIO
 from PIL import Image
 import networkx as nx
 from networkx.algorithms import community
+import gensim
+import pyLDAvis.gensim
+if is_notebook():
+    pyLDAvis.enable_notebook()
 
 TTF_FILE_NAME = str(os.path.dirname(__file__)) + '/data/mplus-1c-regular.ttf'
 
@@ -95,21 +90,21 @@ class NLPlot():
 
     Attributes:
         df (pd.DataFrame): Original data frame to be graphed
-        taget_col: Columns to be analyzed that exist in df (assuming type list) e.g. [hoge, fuga, ...]
+        target_col: Columns to be analyzed that exist in df (assuming type list) e.g. [hoge, fuga, ...]
         output_file_path: path to save the html file of the generated graph
         default_stopwords_file_path: The path to the file that defines the default stopword
 
     """
 
-    def __init__(self, df, taget_col, output_file_path='./',
+    def __init__(self, df, target_col, output_file_path='./',
                  default_stopwords_file_path=''):
         """init"""
-        self.df = df
-        self.taget_col = taget_col
-        self.df.dropna(subset=[self.taget_col], inplace=True)
-        if type(self.df[self.taget_col].iloc[0]) is not list:
-            self.df[self.taget_col] = self.df[self.taget_col].map(lambda x: x.split())
-        self.df[self.taget_col + '_length'] = self.df[self.taget_col].map(lambda x: len(x))
+        self.df = df.copy()
+        self.target_col = target_col
+        self.df.dropna(subset=[self.target_col], inplace=True)
+        if type(self.df[self.target_col].iloc[0]) is not list:
+            self.df.loc[:, self.target_col] = self.df[self.target_col].map(lambda x: x.split())
+        self.df.loc[:, self.target_col + '_length'] = self.df[self.target_col].map(lambda x: len(x))
         self.output_file_path = output_file_path
         self.default_stopwords = []
         if os.path.exists(default_stopwords_file_path):
@@ -135,7 +130,7 @@ class NLPlot():
         fdist = Counter()
 
         # Count the number of occurrences per word.
-        for doc in self.df[self.taget_col]:
+        for doc in self.df[self.target_col]:
             for word in doc:
                 fdist[word] += 1
         # word with a high frequency
@@ -173,7 +168,7 @@ class NLPlot():
         stopwords += self.default_stopwords
 
         _df = self.df.copy()
-        _df['space'] = self.df[self.taget_col].apply(lambda x: ' '.join(x))
+        _df.loc[:, 'space'] = self.df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
         _df = freq_df(_df['space'], n_gram=ngram, n=top_n,
@@ -233,7 +228,7 @@ class NLPlot():
         stopwords += self.default_stopwords
 
         _df = self.df.copy()
-        _df['space'] = self.df[self.taget_col].apply(lambda x: ' '.join(x))
+        _df.loc[:, 'space'] = self.df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
         _df = freq_df(_df['space'], n_gram=ngram, n=top_n,
@@ -280,7 +275,7 @@ class NLPlot():
 
         """
         _df = self.df.copy()
-        fig = px.histogram(_df, x=self.taget_col+'_length',
+        fig = px.histogram(_df, x=self.target_col+'_length',
                            color=color, template=template, nbins=bins)
         fig.update_layout(
             title=str(title),
@@ -323,7 +318,7 @@ class NLPlot():
             mask = None
 
         _df = self.df.copy()
-        text = _df[self.taget_col]
+        text = _df[self.target_col]
         stopwords += self.default_stopwords
 
         wordcloud = WordCloud(
@@ -415,11 +410,11 @@ class NLPlot():
         # create node dataframe
         node_df = pd.DataFrame({'id': list(set(list(edge_df['source']) + list(edge_df['target'])))})
         labels = [i for i in range(len(node_df['id']))]
-        node_df['id_code'] = node_df.index
+        node_df.loc[:, 'id_code'] = node_df.index
         node_dict = dict(zip(node_df['id'], labels))
 
-        edge_df['source_code'] = edge_df['source'].apply(lambda x: node_dict[x])
-        edge_df['target_code'] = edge_df['target'].apply(lambda x: node_dict[x])
+        edge_df.loc[:, 'source_code'] = edge_df['source'].apply(lambda x: node_dict[x])
+        edge_df.loc[:, 'target_code'] = edge_df['target'].apply(lambda x: node_dict[x])
 
         self.edge_df = edge_df
         self.node_df = node_df
@@ -460,7 +455,8 @@ class NLPlot():
 
         Args:
             stopwords (list): List of words to exclude
-            min_edge_frequency (int): Minimum number of edge occurrences (edges with fewer than this number are excluded)
+            min_edge_frequency (int): Minimum number of edge occurrences
+                                      (edges with fewer than this number are excluded)
 
         Returns:
             None
@@ -470,10 +466,10 @@ class NLPlot():
         self.df_edit = self.df.copy()
 
         # Remove duplicates from the list to be analyzed
-        self.df_edit[self.taget_col] = self.df_edit[self.taget_col].map(lambda x: list(set(x)))
+        self.df_edit.loc[:, self.target_col] = self.df_edit[self.target_col].map(lambda x: list(set(x)))
 
         # Acquire only the column data for this analysis.
-        self.target = self.df_edit[[self.taget_col]]
+        self.target = self.df_edit[[self.target_col]]
 
         # Get an array of word lists by excluding stop words
         # [['hoge1', 'hoge4', 'hoge7', 'hoge5'],
@@ -488,7 +484,7 @@ class NLPlot():
                 except Exception:
                     pass
             return words
-        batch = self.target[self.taget_col].map(_removestop)
+        batch = self.target[self.target_col].map(_removestop)
         batches = batch.values.tolist()
 
         # Generating the Edge and Node data frames for a graph
@@ -502,9 +498,9 @@ class NLPlot():
         self.adjacencies = dict(self.G.adjacency())
         self.betweeness = nx.betweenness_centrality(self.G)
         self.clustering_coeff = nx.clustering(self.G)
-        self.node_df['adjacency_frequency'] = self.node_df['id_code'].map(lambda x: len(self.adjacencies[x]))
-        self.node_df['betweeness_centrality'] = self.node_df['id_code'].map(lambda x: self.betweeness[x])
-        self.node_df['clustering_coefficient'] = self.node_df['id_code'].map(lambda x: self.clustering_coeff[x])
+        self.node_df.loc[:, 'adjacency_frequency'] = self.node_df['id_code'].map(lambda x: len(self.adjacencies[x]))
+        self.node_df.loc[:, 'betweeness_centrality'] = self.node_df['id_code'].map(lambda x: self.betweeness[x])
+        self.node_df.loc[:, 'clustering_coefficient'] = self.node_df['id_code'].map(lambda x: self.clustering_coeff[x])
 
         # create community
         # https://networkx.github.io/documentation/stable/reference/algorithms/community.html#module-networkx.algorithms.community.modularity_max
@@ -519,7 +515,7 @@ class NLPlot():
                 if source_val in v:
                     return k
 
-        self.node_df['community'] = self.node_df['id_code'].map(lambda x: community_allocation(x))
+        self.node_df.loc[:, 'community'] = self.node_df['id_code'].map(lambda x: community_allocation(x))
 
         print('node_size:{}, edge_size:{}'.format(self.node_df.shape[0], self.edge_df.shape[0]))
 
@@ -565,7 +561,7 @@ class NLPlot():
         _df.columns = cols
 
         for i in _df.columns:
-            _df[i] = _df[i].apply(lambda x: x*sizing)
+            _df.loc[:, i] = _df[i].apply(lambda x: x*sizing)
 
         # extract graph x,y co-ordinates from G instance
         pos = layout(self.G)
@@ -682,7 +678,7 @@ class NLPlot():
         _df = self.node_df.copy()
 
         # change community label to string (needed for plot)
-        _df['community'] = _df['community'].map(lambda x: str(x))
+        _df.loc[:, 'community'] = _df['community'].map(lambda x: str(x))
 
         # conditionals for plot type
         if colorscale is False:
@@ -725,8 +721,8 @@ class NLPlot():
         workers = multiprocessing.cpu_count()
         workers = workers if workers == 1 else int(workers/2)
 
-        dic = gensim.corpora.Dictionary(self.df[self.taget_col])
-        bow_corpus = [dic.doc2bow(doc) for doc in self.df[self.taget_col]]
+        dic = gensim.corpora.Dictionary(self.df[self.target_col])
+        bow_corpus = [dic.doc2bow(doc) for doc in self.df[self.target_col]]
 
         # cf. https://radimrehurek.com/gensim/models/ldamodel.html
         lda_model = gensim.models.LdaMulticore(bow_corpus,
