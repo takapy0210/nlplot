@@ -6,13 +6,13 @@ Facilitates the visualization of natural language processing and provides quicke
 
 You can draw the following graph
 
-1. N-gram bar chart
-2. N-gram tree Map
-3. Histogram of the word count
-4. wordcloud
-5. co-occurrence networks
-6. sunburst chart
-7. pyLDAvis
+1. [N-gram bar chart](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_uni-gram.html)
+2. [N-gram tree Map](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_Tree%20of%20Most%20Common%20Words.html)
+3. [Histogram of the word count](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_number%20of%20words%20distribution.html)
+4. [wordcloud](https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/wordcloud.png)
+5. [co-occurrence networks](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_Co-occurrence%20network.html)
+6. [sunburst chart](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_sunburst%20chart.html)
+7. [pyLDAvis](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_pyldavis.html)
 
 （Tested in English and Japanese）
 
@@ -23,6 +23,10 @@ You can draw the following graph
 ```sh
 pip install nlplot
 ```
+
+I've posted on [this blog](https://www.takapy.work/entry/2020/05/17/192947) about the specific use. (Japanese)
+
+And, The sample code is also available [in the kernel of kaggle](https://www.kaggle.com/takanobu0210/twitter-sentiment-eda-using-nlplot). (English)
 
 ## Usage
 
@@ -47,21 +51,24 @@ import nlplot
 # target_col as a list type or a string separated by a space.
 npt = nlplot.NLPlot(df, target_col='text')
 
+# Stopword calculations can be performed.
+stopwords = npt.get_stopword(top_n=30, min_freq=0)
+
 # 1. N-gram bar chart
-npt.bar_ngram(title='uni-gram', ngram=1, top_n=50)
-npt.bar_ngram(title='bi-gram', ngram=2, top_n=50)
+npt.bar_ngram(title='uni-gram', ngram=1, top_n=50, stopwords=stopwords)
+npt.bar_ngram(title='bi-gram', ngram=2, top_n=50, stopwords=stopwords)
 
 # 2. N-gram tree Map
-npt.treemap(title='Tree of Most Common Words', ngram=1,top_n=30)
+npt.treemap(title='Tree of Most Common Words', ngram=1, top_n=30, stopwords=stopwords)
 
 # 3. Histogram of the word count
-npt.word_distribution(title='number of words distribution')
+npt.word_distribution(title='words distribution')
 
 # 4. wordcloud
-npt.wordcloud()
+npt.wordcloud(stopwords=stopwords, colormap='tab20_r')
 
 # 5. co-occurrence networks
-npt.build_graph(min_edge_frequency=10)
+npt.build_graph(stopwords=stopwords, min_edge_frequency=10)
 # The number of nodes and edges to which this output is plotted.
 # If this number is too large, plotting will take a long time, so adjust the [min_edge_frequency] well.
 >> node_size:70, edge_size:166
@@ -71,8 +78,10 @@ npt.co_network(title='Co-occurrence network')
 npt.sunburst(title='sunburst chart', colorscale=True)
 
 # 7. pyLDAvis
+# If you want to run it in a notebook environment, you need to use the import and magic commands
+import pyLDAvis
+pyLDAvis.enable_notebook()
 npt.ldavis(num_topics=5, passes=5, save=False)
-
 
 ```
 
