@@ -131,8 +131,9 @@ class NLPlot():
 
         # Count the number of occurrences per word.
         for doc in self.df[self.target_col]:
-            for word in doc:
-                fdist[word] += 1
+            for text in doc:
+                for word in text.split():
+                    fdist[word] += 1
         # word with a high frequency
         common_words = {word for word, freq in fdist.most_common(top_n)}
         # word with a low frequency
