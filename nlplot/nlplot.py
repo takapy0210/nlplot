@@ -24,7 +24,7 @@ from PIL import Image
 import networkx as nx
 from networkx.algorithms import community
 import gensim
-import pyLDAvis.gensim
+import pyLDAvis.gensim_models
 if is_notebook():
     pyLDAvis.enable_notebook()
 
@@ -732,7 +732,7 @@ class NLPlot():
                                                workers=workers,
                                                random_state=0)
 
-        vis = pyLDAvis.gensim.prepare(lda_model, bow_corpus, dic)
+        vis = pyLDAvis.gensim_models.prepare(lda_model, bow_corpus, dic)
 
         if save:
             date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
