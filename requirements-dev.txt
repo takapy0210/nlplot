@@ -11,3 +11,4 @@ pillow
 networkx
 ipython
 pytest
+flake8
