@@ -2,8 +2,8 @@ pyldavis
 tqdm
 seaborn
 plotly>=4.4.0
-numpy==1.19.2
-matplotlib==3.1.1
+# numpy==1.19.2
+# matplotlib==3.1.1
 wordcloud
 pillow
 networkx
