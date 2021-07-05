@@ -6,5 +6,7 @@ wordcloud
 pillow
 networkx
 ipython
+sklearn
+gensim
 pytest
 flake8

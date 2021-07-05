@@ -6,3 +6,5 @@ wordcloud
 pillow
 networkx
 ipython
+sklearn
+gensim
