@@ -2,29 +2,29 @@
 
 import os
 import gc
-import pandas as pd
-import numpy as np
 import itertools
 import multiprocessing
+import IPython.display
+from io import BytesIO
+from PIL import Image
 from collections import defaultdict, Counter
-from tqdm import tqdm
-from sklearn import preprocessing
-from .helper import is_notebook
 import datetime as datetime
 
+import pandas as pd
+import numpy as np
+from tqdm import tqdm
+from sklearn import preprocessing
 import seaborn as sns
 import plotly
 import plotly.graph_objs as go
 import plotly.express as px
 from plotly.offline import iplot
 from wordcloud import WordCloud
-import IPython.display
-from io import BytesIO
-from PIL import Image
 import networkx as nx
 from networkx.algorithms import community
 import gensim
-import pyLDAvis.gensim_models
+import pyLDAvis.gensim
+from .helper import is_notebook
 if is_notebook():
     pyLDAvis.enable_notebook()
 
@@ -732,7 +732,7 @@ class NLPlot():
                                                workers=workers,
                                                random_state=0)
 
-        vis = pyLDAvis.gensim_models.prepare(lda_model, bow_corpus, dic)
+        vis = pyLDAvis.gensim.prepare(lda_model, bow_corpus, dic)
 
         if save:
             date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]

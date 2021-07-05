@@ -1,5 +1,5 @@
 tqdm
-pyLDAvis>=3.3.1
+pyLDAvis==2.1.2
 seaborn
 plotly>=4.4.1
 wordcloud
