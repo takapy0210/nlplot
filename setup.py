@@ -15,7 +15,7 @@ def read_requirements():
 
 setup(
     name='nlplot',
-    version='1.2.0',
+    version='1.3.0',
     description='Visualization Module for Natural Language Processing',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -26,6 +26,6 @@ setup(
     install_requires=read_requirements(),
     packages=find_packages(exclude=('tests')),
     tests_require=["pytest"],
-    package_data={'nlplot':['data/*']},
-    python_requires='~=3.6'
+    package_data={'nlplot': ['data/*']},
+    python_requires='>=3.6'
 )
