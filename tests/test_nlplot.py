@@ -86,8 +86,3 @@ def test_nlplot_sunburst(prepare_instance):
     npt = prepare_instance
     npt.build_graph(min_edge_frequency=0)
     npt.sunburst(title='sunburst chart', colorscale=True)
-
-
-def test_nlplot_ldavis(prepare_instance):
-    npt = prepare_instance
-    npt.ldavis(num_topics=5, passes=5, save=False)
