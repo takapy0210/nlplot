@@ -3,7 +3,6 @@
 import os
 import gc
 import itertools
-import multiprocessing
 import IPython.display
 from io import BytesIO
 from PIL import Image
@@ -22,11 +21,6 @@ from plotly.offline import iplot
 from wordcloud import WordCloud
 import networkx as nx
 from networkx.algorithms import community
-import gensim
-import pyLDAvis.gensim_models
-from .helper import is_notebook
-if is_notebook():
-    pyLDAvis.enable_notebook()
 
 TTF_FILE_NAME = str(os.path.dirname(__file__)) + '/data/mplus-1c-regular.ttf'
 
@@ -702,44 +696,6 @@ class NLPlot():
         del _df
         gc.collect()
         return fig
-
-    def ldavis(self, num_topics, passes, save=False) -> pyLDAvis:
-        """Plots of pyLDAvis
-
-        cf: https://github.com/bmabey/pyLDAvis
-
-        Args:
-            num_topics (int): The number of requested latent topics to be extracted from the training corpus.
-            passes (int): Number of passes through the corpus during training.
-            save (bool): Whether or not to save the HTML file.
-
-        Returns:
-            pyLDAvis: Figure of a pyLDAvis
-
-        """
-
-        workers = multiprocessing.cpu_count()
-        workers = workers if workers == 1 else int(workers/2)
-
-        dic = gensim.corpora.Dictionary(self.df[self.target_col])
-        bow_corpus = [dic.doc2bow(doc) for doc in self.df[self.target_col]]
-
-        # cf. https://radimrehurek.com/gensim/models/ldamodel.html
-        lda_model = gensim.models.LdaMulticore(bow_corpus,
-                                               num_topics=num_topics,
-                                               id2word=dic,
-                                               passes=passes,
-                                               workers=workers,
-                                               random_state=0)
-
-        vis = pyLDAvis.gensim_models.prepare(lda_model, bow_corpus, dic)
-
-        if save:
-            date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
-            filename = date + '_' + 'pyldavis.html'
-            pyLDAvis.save_html(vis, filename)
-
-        return vis
 
     def save_plot(self, fig, title) -> None:
         """Save the HTML file
