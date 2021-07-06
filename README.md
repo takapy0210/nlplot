@@ -1,5 +1,5 @@
-# nlplot
-Visualization Module for Natural Language Processing
+# 📝 nlplot
+nlplot: Analysis and visualization module for Natural Language Processing 📈
 
 ## Description
 Facilitates the visualization of natural language processing and provides quicker analysis
@@ -12,14 +12,13 @@ You can draw the following graph
 4. [wordcloud](https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/wordcloud.png)
 5. [co-occurrence networks](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_Co-occurrence%20network.html)
 6. [sunburst chart](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_sunburst%20chart.html)
-7. [pyLDAvis](https://htmlpreview.github.io/?https://github.com/takapy0210/takapy_blog/blob/master/nlp/twitter_analytics_using_nlplot/2020-05-17_pyldavis.html)
 
 （Tested in English and Japanese）
 
 ## Requirement
 - [python package](https://github.com/takapy0210/nlplot/blob/master/requirements.txt)
 
-## Install
+## Installation
 ```sh
 pip install nlplot
 ```
@@ -28,11 +27,21 @@ I've posted on [this blog](https://www.takapy.work/entry/2020/05/17/192947) abou
 
 And, The sample code is also available [in the kernel of kaggle](https://www.kaggle.com/takanobu0210/twitter-sentiment-eda-using-nlplot). (English)
 
-## Usage
+## Quick start - Data Preparation
 
-sample df
+The column to be analyzed must be a space-delimited string
 
 ```python
+# sample data
+target_col = "text"
+texts = [
+    "Think rich look poor",
+    "When you come to a roadblock, take a detour",
+    "When it is dark enough, you can see the stars",
+    "Never let your memories be greater than your dreams",
+    "Victory is sweetest when you’ve known defeat"
+    ]
+df = pd.DataFrame({target_col: texts})
 df.head()
 ```
 
@@ -45,6 +54,7 @@ df.head()
 |  4  |  Victory is sweetest when you’ve known defeat  |
 
 
+## Quick start - Python API
 ```python
 import nlplot
 
@@ -77,12 +87,6 @@ npt.co_network(title='Co-occurrence network')
 # 6. sunburst chart
 npt.sunburst(title='sunburst chart', colorscale=True)
 
-# 7. pyLDAvis
-# If you want to run it in a notebook environment, you need to use the import and magic commands
-import pyLDAvis
-pyLDAvis.enable_notebook()
-npt.ldavis(num_topics=5, passes=5, save=False)
-
 ```
 
 ## Document
@@ -101,9 +105,6 @@ pytest
 
 - co-occurrence networks is used to calculate the co-occurrence network
     - https://networkx.github.io/documentation/stable/tutorial.html
-
-- The following is used to plot pyLDAvis
-    - https://github.com/bmabey/pyLDAvis
 
 - wordcloud uses the following fonts
     - https://mplus-fonts.osdn.jp/about.html
