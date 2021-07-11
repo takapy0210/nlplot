@@ -47,7 +47,7 @@ def test_freq_df(apply_space, n_gram, top_n):
     stop_words = []
     verbose = False
     df = apply_space
-    word_frequency = generate_freq_df(df, gram_n=n_gram, top_n=top_n,
+    word_frequency = generate_freq_df(df, n_gram=n_gram, top_n=top_n,
                                       stopwords=stop_words, verbose=verbose)
     expect_columns = ["word", "word_count"]
     assert isinstance(word_frequency, pd.DataFrame)
@@ -58,12 +58,12 @@ def test_freq_df(apply_space, n_gram, top_n):
 
 def test_nlplot_bar_ngram(prepare_instance):
     npt = prepare_instance
-    npt.bar_ngram(title='uni-gram', ngram=1, top_n=50)
+    npt.bar_ngram(title='uni-gram', n_gram=1, top_n=50)
 
 
 def test_nlplot_treemap(prepare_instance):
     npt = prepare_instance
-    npt.treemap(title='Tree of Most Common Words', ngram=1, top_n=30)
+    npt.treemap(title='Tree of Most Common Words', n_gram=1, top_n=30)
 
 
 def test_nlplot_word_distribution(prepare_instance):

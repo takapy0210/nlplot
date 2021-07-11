@@ -41,13 +41,13 @@ def get_colorpalette(colorpalette: str, n_colors: int) -> list:
     return rgb
 
 
-def generate_freq_df(value: pd.Series, gram_n: int = 1, top_n: int = 50, stopwords: list = [],
+def generate_freq_df(value: pd.Series, n_gram: int = 1, top_n: int = 50, stopwords: list = [],
                      verbose: bool = True) -> pd.DataFrame:
     """Generate a data frame of frequent word
 
     Args:
         value (pd.Series): Separated by space values.
-        gram_n (int, optional): N number of N grams. Dafaults to 1.
+        n_gram (int, optional): N number of N grams. Dafaults to 1.
         top_n (int, optional): N to get TOP N. Dafaults to 50.
         stopwords (list of str, optional): A list of words to specify for the stopword.
         verbose (bool, optional): Whether or not to output the log by tqdm.
@@ -74,11 +74,11 @@ def generate_freq_df(value: pd.Series, gram_n: int = 1, top_n: int = 50, stopwor
     freq_dict = defaultdict(int)
     if verbose:
         for sent in tqdm(value):
-            for word in generate_ngrams(str(sent), n_gram=gram_n):
+            for word in generate_ngrams(str(sent), n_gram):
                 freq_dict[word] += 1
     else:
         for sent in value:
-            for word in generate_ngrams(str(sent), n_gram=gram_n):
+            for word in generate_ngrams(str(sent), n_gram):
                 freq_dict[word] += 1
 
     # frequent word DataFrame
@@ -120,8 +120,8 @@ class NLPlot():
         and the words that occur only below the min_freq as stopwords.
 
         Args:
-            top_n (int): Top N of the number of occurrences of words to exclude
-            min_freq (int): Bottom of the number of occurrences of words to exclude
+            top_n (int, optional): Top N of the number of occurrences of words to exclude. Defaults to 10.
+            min_freq (int, optional): Bottom of the number of occurrences of words to exclude. Defaults to 5.
 
         Returns:
             list: list of stop words
@@ -139,23 +139,23 @@ class NLPlot():
         stopwords = list(common_words.union(rare_words))
         return stopwords
 
-    def bar_ngram(self, title=None, xaxis_label='', yaxis_label='', ngram=1, top_n=50, width=800, height=1100,
+    def bar_ngram(self, title=None, xaxis_label='', yaxis_label='', n_gram=1, top_n=50, width=800, height=1100,
                   color=None, horizon=True, stopwords=[], verbose=True, save=False) -> px.bar:
         """Plots of n-gram bar chart
 
         Args:
-            title (str): title of plot
-            xaxis_label (str): x-axis label name
-            yaxis_label (str): y-axis label name
-            ngram (int): N number of N grams
-            top_n (int): How many words should be output
-            width (int): width of the graph
-            height (int): height of the graph
-            color (str): color of the chart
-            horizon (bool): To create a horizontal bar graph, use the True
-            stopwords (list): A list of words to specify for the stopword.
-            verbose (bool): Whether or not to output the log by tqdm
-            save (bool): Whether or not to save the HTML file.
+            title (str, optional): title of plot.
+            xaxis_label (str, optional): x-axis label name.
+            yaxis_label (str, optional): y-axis label name.
+            n_gram (int, optional): N number of N grams. Defaults to 1.
+            top_n (int, optional): How many words should be output. Defaults to 50.
+            width (int, optional): width of the graph. Defaults to 800.
+            height (int, optional): height of the graph. Defaults to 1100.
+            color (str, optional): color of the chart. Defaults to None.
+            horizon (bool, optional): To create a horizontal bar graph, use the True. Defaults to True.
+            stopwords (list, optional): A list of words to specify for the stopword. Defaults to [].
+            verbose (bool, optional): Whether or not to output the log by tqdm. Defaults to True.
+            save (bool, optional): Whether or not to save the HTML file. Defaults to False.
 
         Returns:
             px.bar: Figure of a bar graph
@@ -163,22 +163,23 @@ class NLPlot():
 
         stopwords += self.default_stopwords
 
-        self.freq_df = self.df.copy()
-        self.freq_df.loc[:, 'space'] = self.df[self.target_col].apply(lambda x: ' '.join(x))
+        self.ngram_df = self.df.copy()
+        self.ngram_df.loc[:, 'space'] = self.ngram_df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
-        self.freq_df = generate_freq_df(self.freq_df['space'], n_gram=ngram, n=top_n, stopwords=stopwords, verbose=verbose)
+        self.ngram_df = generate_freq_df(self.ngram_df['space'], n_gram=n_gram, n=top_n,
+                                         stopwords=stopwords, verbose=verbose)
 
         if horizon:
             fig = px.bar(
-                self.freq_df.sort_values('word_count'),
+                self.ngram_df.sort_values('word_count'),
                 y='word',
                 x='word_count',
                 text='word_count',
                 orientation='h',)
         else:
             fig = px.bar(
-                self.freq_df,
+                self.ngram_df,
                 y='word_count',
                 x='word',
                 text='word_count',)
@@ -199,13 +200,13 @@ class NLPlot():
 
         return fig
 
-    def treemap(self, title=None, ngram=1, top_n=50,
+    def treemap(self, title=None, n_gram=1, top_n=50,
                 width=1300, height=600, stopwords=[], verbose=True, save=False) -> px.treemap:
         """Plots of Tree Map
 
         Args:
             title (str): title of plot
-            ngram (int): N number of N grams
+            n_gram (int): N number of N grams
             top_n (int): How many words should be output
             width (int): width of the graph
             height (int): height of the graph
@@ -219,14 +220,15 @@ class NLPlot():
 
         stopwords += self.default_stopwords
 
-        _df = self.df.copy()
-        _df.loc[:, 'space'] = self.df[self.target_col].apply(lambda x: ' '.join(x))
+        self.treemap_df = self.df.copy()
+        self.treemap_df.loc[:, 'space'] = self.treemap_df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
-        _df = generate_freq_df(_df['space'], n_gram=ngram, n=top_n, stopwords=stopwords, verbose=verbose)
+        self.treemap_df = generate_freq_df(self.treemap_df['space'], n_gram=n_gram, top_n=top_n,
+                                           stopwords=stopwords, verbose=verbose)
 
         fig = px.treemap(
-            _df,
+            self.treemap_df,
             path=['word'],
             values='word_count',
         )
@@ -239,8 +241,6 @@ class NLPlot():
         if save:
             self.save_plot(fig, title)
 
-        del _df
-        gc.collect()
         return fig
 
     def word_distribution(self, title=None,
@@ -263,7 +263,6 @@ class NLPlot():
 
         Returns:
             px.histogram: Figure of a bar graph
-
         """
         _df = self.df.copy()
         fig = px.histogram(_df, x=self.target_col+'_length',
@@ -451,7 +450,6 @@ class NLPlot():
 
         Returns:
             None
-
         """
 
         self.df_edit = self.df.copy()
