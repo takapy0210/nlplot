@@ -167,7 +167,7 @@ class NLPlot():
         self.ngram_df.loc[:, 'space'] = self.ngram_df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
-        self.ngram_df = generate_freq_df(self.ngram_df['space'], n_gram=n_gram, n=top_n,
+        self.ngram_df = generate_freq_df(self.ngram_df['space'], n_gram=n_gram, top_n=top_n,
                                          stopwords=stopwords, verbose=verbose)
 
         if horizon:
