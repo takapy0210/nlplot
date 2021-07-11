@@ -22,42 +22,50 @@ from wordcloud import WordCloud
 import networkx as nx
 from networkx.algorithms import community
 
+# Load Japanese Font
 TTF_FILE_NAME = str(os.path.dirname(__file__)) + '/data/mplus-1c-regular.ttf'
 
 
-def get_colorpalette(colorpalette, n_colors) -> list:
+def get_colorpalette(colorpalette: str, n_colors: int) -> list:
     """Get a color palette
 
     Args:
-        colorpalette (str): cf.https://qiita.com/SaitoTsutomu/items/c79c9973a92e1e2c77a7
-        n_colors (int): Number of colors to be displayed
+        colorpalette (str): cf.https://qiita.com/SaitoTsutomu/items/c79c9973a92e1e2c77a7 .
+        n_colors (int): Number of colors to be displayed.
 
     Returns:
-            list: List of RGB
-
+        list of str: e.g. ['rgb(220.16,95.0272,87.03)', 'rgb(220.16,209.13005714285714,87.03)', ...]
     """
     palette = sns.color_palette(colorpalette, n_colors)
     rgb = ['rgb({},{},{})'.format(*[x*256 for x in rgb]) for rgb in palette]
     return rgb
 
 
-def freq_df(df_value, n_gram=1, n=50, stopwords=[], verbose=True):
-    """Create a data frame of frequent word
+def generate_freq_df(value: pd.Series, gram_n: int = 1, top_n: int = 50, stopwords: list = [],
+                     verbose: bool = True) -> pd.DataFrame:
+    """Generate a data frame of frequent word
 
     Args:
-        df_value (pd.Series): Separated by space values
-        stopwords (list): A list of words to specify for the stopword
-        n_gram (int): N number of N grams
-        n (int): How many words should be output
-        verbose (bool): Whether or not to output the log by tqdm
+        value (pd.Series): Separated by space values.
+        gram_n (int, optional): N number of N grams. Dafaults to 1.
+        top_n (int, optional): N to get TOP N. Dafaults to 50.
+        stopwords (list of str, optional): A list of words to specify for the stopword.
+        verbose (bool, optional): Whether or not to output the log by tqdm.
 
     Returns:
-            list: List of RGB
-
+        pd.DataFrame: frequent word DataFrame
     """
 
-    def generate_ngrams(text, n_gram=1):
-        """Function to create a list of n-grams"""
+    def generate_ngrams(text: str, n_gram: int = 1) -> list:
+        """Generate ngram
+
+        Args:
+            text (str): Target text
+            n_gram (int, optional): N number of N grams. Defaults to 1.
+
+        Returns:
+            list of str: ngram list
+        """
         token = [token for token in text.lower().split(" ")
                  if token != "" if token not in stopwords]
         ngrams = zip(*[token[i:] for i in range(n_gram)])
@@ -65,34 +73,32 @@ def freq_df(df_value, n_gram=1, n=50, stopwords=[], verbose=True):
 
     freq_dict = defaultdict(int)
     if verbose:
-        for sent in tqdm(df_value):
-            for word in generate_ngrams(str(sent), n_gram=n_gram):
+        for sent in tqdm(value):
+            for word in generate_ngrams(str(sent), n_gram=gram_n):
                 freq_dict[word] += 1
     else:
-        for sent in df_value:
-            for word in generate_ngrams(str(sent), n_gram=n_gram):
+        for sent in value:
+            for word in generate_ngrams(str(sent), n_gram=gram_n):
                 freq_dict[word] += 1
 
-    fd_sorted = pd.DataFrame(sorted(freq_dict.items(),
-                             key=lambda x: x[1])[::-1])
-    fd_sorted.columns = ['word', 'word_count']
-    return fd_sorted.head(n)
+    # frequent word DataFrame
+    output_df = pd.DataFrame(sorted(freq_dict.items(), key=lambda x: x[1])[::-1])
+    output_df.columns = ['word', 'word_count']
+    return output_df.head(top_n)
 
 
 class NLPlot():
     """Visualization Module for Natural Language Processing
 
     Attributes:
-        df (pd.DataFrame): Original data frame to be graphed
+        df (pd.DataFrame): Original dataframe to be graphed.
         target_col: Columns to be analyzed that exist in df (assuming type list) e.g. [hoge, fuga, ...]
         output_file_path: path to save the html file of the generated graph
         default_stopwords_file_path: The path to the file that defines the default stopword
 
     """
-
-    def __init__(self, df, target_col, output_file_path='./',
-                 default_stopwords_file_path=''):
-        """init"""
+    def __init__(self, df: pd.DataFrame, target_col: str, output_file_path: str = './',
+                 default_stopwords_file_path: str = ''):
         self.df = df.copy()
         self.target_col = target_col
         self.df.dropna(subset=[self.target_col], inplace=True)
@@ -119,7 +125,6 @@ class NLPlot():
 
         Returns:
             list: list of stop words
-
         """
         fdist = Counter()
 
@@ -134,9 +139,7 @@ class NLPlot():
         stopwords = list(common_words.union(rare_words))
         return stopwords
 
-    def bar_ngram(self, title=None,
-                  xaxis_label='', yaxis_label='',
-                  ngram=1, top_n=50, width=800, height=1100,
+    def bar_ngram(self, title=None, xaxis_label='', yaxis_label='', ngram=1, top_n=50, width=800, height=1100,
                   color=None, horizon=True, stopwords=[], verbose=True, save=False) -> px.bar:
         """Plots of n-gram bar chart
 
@@ -156,28 +159,26 @@ class NLPlot():
 
         Returns:
             px.bar: Figure of a bar graph
-
         """
 
         stopwords += self.default_stopwords
 
-        _df = self.df.copy()
-        _df.loc[:, 'space'] = self.df[self.target_col].apply(lambda x: ' '.join(x))
+        self.freq_df = self.df.copy()
+        self.freq_df.loc[:, 'space'] = self.df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
-        _df = freq_df(_df['space'], n_gram=ngram, n=top_n,
-                      stopwords=stopwords, verbose=verbose)
+        self.freq_df = generate_freq_df(self.freq_df['space'], n_gram=ngram, n=top_n, stopwords=stopwords, verbose=verbose)
 
         if horizon:
             fig = px.bar(
-                _df.sort_values('word_count'),
+                self.freq_df.sort_values('word_count'),
                 y='word',
                 x='word_count',
                 text='word_count',
                 orientation='h',)
         else:
             fig = px.bar(
-                _df,
+                self.freq_df,
                 y='word_count',
                 x='word',
                 text='word_count',)
@@ -196,8 +197,6 @@ class NLPlot():
         if save:
             self.save_plot(fig, title)
 
-        del _df
-        gc.collect()
         return fig
 
     def treemap(self, title=None, ngram=1, top_n=50,
@@ -216,7 +215,6 @@ class NLPlot():
 
         Returns:
             px.treemap: Figure of a treemap graph
-
         """
 
         stopwords += self.default_stopwords
@@ -225,8 +223,7 @@ class NLPlot():
         _df.loc[:, 'space'] = self.df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
-        _df = freq_df(_df['space'], n_gram=ngram, n=top_n,
-                      stopwords=stopwords, verbose=verbose)
+        _df = generate_freq_df(_df['space'], n_gram=ngram, n=top_n, stopwords=stopwords, verbose=verbose)
 
         fig = px.treemap(
             _df,
