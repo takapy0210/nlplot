@@ -374,7 +374,6 @@ class NLPlot():
                                     Image(data=stream.getvalue()))
 
         img = wordcloud.to_array()
-        # show_array(img)
 
         return show_array(img)
 
