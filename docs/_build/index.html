@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nlplot 1.3.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> nlplot
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-nlplot">nlplot package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#nlplot-nlplot-module">nlplot.nlplot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-nlplot">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">nlplot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>nlplot 1.3.0 documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-nlplot-s-documentation">
+<h1>Welcome to nlplot’s documentation!<a class="headerlink" href="#welcome-to-nlplot-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<span id="document-nlplot"></span><div class="section" id="nlplot-package">
+<h2>nlplot package<a class="headerlink" href="#nlplot-package" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="submodules">
+<h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="nlplot-nlplot-module">
+<h3>nlplot.nlplot module<a class="headerlink" href="#nlplot-nlplot-module" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-nlplot">
+<span id="module-contents"></span><h3>Module contents<a class="headerlink" href="#module-nlplot" title="Permalink to this headline">¶</a></h3>
+<p>Visualization Module for Natural Language Processing</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nlplot.NLPlot">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">nlplot.</span></span><span class="sig-name descname"><span class="pre">NLPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_col</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_stopwords_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nlplot.NLPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Visualization Module for Natural Language Processing</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nlplot.NLPlot.df">
+<span class="sig-name descname"><span class="pre">df</span></span><a class="headerlink" href="#nlplot.NLPlot.df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Original dataframe to be graphed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nlplot.NLPlot.target_col">
+<span class="sig-name descname"><span class="pre">target_col</span></span><a class="headerlink" href="#nlplot.NLPlot.target_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Columns to be analyzed that exist in df (assuming type list) e.g. [hoge, fuga, …]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nlplot.NLPlot.output_file_path">
+<span class="sig-name descname"><span class="pre">output_file_path</span></span><a class="headerlink" href="#nlplot.NLPlot.output_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>path to save the html file of the generated graph</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nlplot.NLPlot.default_stopwords_file_path">
+<span class="sig-name descname"><span class="pre">default_stopwords_file_path</span></span><a class="headerlink" href="#nlplot.NLPlot.default_stopwords_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path to the file that defines the default stopword</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.bar_ngram">
+<span class="sig-name descname"><span class="pre">bar_ngram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis_label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis_label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopwords</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">plotly.express._chart_types.bar</span><a class="headerlink" href="#nlplot.NLPlot.bar_ngram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots of n-gram bar chart</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – title of plot. Defaults to None.</p></li>
+<li><p><strong>xaxis_label</strong> (<em>str</em><em>, </em><em>optional</em>) – x-axis label name. Defaults to ‘’.</p></li>
+<li><p><strong>yaxis_label</strong> (<em>str</em><em>, </em><em>optional</em>) – y-axis label name. Defaults to ‘’.</p></li>
+<li><p><strong>n_gram</strong> (<em>int</em><em>, </em><em>optional</em>) – N number of N grams. Defaults to 1.</p></li>
+<li><p><strong>top_n</strong> (<em>int</em><em>, </em><em>optional</em>) – How many words should be output. Defaults to 50.</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – width of the graph. Defaults to 800.</p></li>
+<li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – height of the graph. Defaults to 1100.</p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – color of the chart. Defaults to None.</p></li>
+<li><p><strong>horizon</strong> (<em>bool</em><em>, </em><em>optional</em>) – To create a horizontal bar graph, use the True. Defaults to True.</p></li>
+<li><p><strong>stopwords</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of words to specify for the stopword. Defaults to [].</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to output the log by tqdm. Defaults to True.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to save the HTML file. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Figure of a bar graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>px.bar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.build_graph">
+<span class="sig-name descname"><span class="pre">build_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stopwords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edge_frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#nlplot.NLPlot.build_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessing to output a co-occurrence network</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stopwords</strong> (<em>list</em>) – List of words to exclude</p></li>
+<li><p><strong>min_edge_frequency</strong> (<em>int</em>) – Minimum number of edge occurrences
+(edges with fewer than this number are excluded)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.co_network">
+<span class="sig-name descname"><span class="pre">co_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">title</span></em>, <em class="sig-param"><span class="pre">sizing=100</span></em>, <em class="sig-param"><span class="pre">node_size='adjacency_frequency'</span></em>, <em class="sig-param"><span class="pre">color_palette='hls'</span></em>, <em class="sig-param"><span class="pre">layout=&lt;function</span> <span class="pre">kamada_kawai_layout&gt;</span></em>, <em class="sig-param"><span class="pre">light_theme=True</span></em>, <em class="sig-param"><span class="pre">width=1700</span></em>, <em class="sig-param"><span class="pre">height=1200</span></em>, <em class="sig-param"><span class="pre">save=False</span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#nlplot.NLPlot.co_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots of co-occurrence networks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – title of plot</p></li>
+<li><p><strong>sizing</strong> (<em>int</em>) – Size of the maker</p></li>
+<li><p><strong>node_size</strong> (<em>str</em>) – Column name to specify the size of the node</p></li>
+<li><p><strong>color_palette</strong> (<em>str</em>) – cf.https://qiita.com/SaitoTsutomu/items/c79c9973a92e1e2c77a7</p></li>
+<li><p><strong>layout</strong> – nx.kamada_kawai_layout</p></li>
+<li><p><strong>light_theme</strong> (<em>bool</em>) – True if you want a light theme.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – width of the graph</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – height of the graph</p></li>
+<li><p><strong>save</strong> (<em>bool</em>) – Whether or not to save the HTML file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.get_edges_nodes">
+<span class="sig-name descname"><span class="pre">get_edges_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edge_frequency</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#nlplot.NLPlot.get_edges_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generating the Edge and Node data frames for a graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batches</strong> (<em>list</em>) – array of word lists</p></li>
+<li><p><strong>min_edge_frequency</strong> (<em>int</em>) – Minimum number of edge occurrences.
+Edges less than this number will be removed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.get_graph">
+<span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">networkx.classes.graph.Graph</span><a class="headerlink" href="#nlplot.NLPlot.get_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>create Networkx</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Networkx graph</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>nx.Graph()</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.get_stopword">
+<span class="sig-name descname"><span class="pre">get_stopword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#nlplot.NLPlot.get_stopword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the stop word.</p>
+<p>Calculate the top_n words with the highest number of occurrences
+and the words that occur only below the min_freq as stopwords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top_n</strong> (<em>int</em><em>, </em><em>optional</em>) – Top N of the number of occurrences of words to exclude. Defaults to 10.</p></li>
+<li><p><strong>min_freq</strong> (<em>int</em><em>, </em><em>optional</em>) – Bottom of the number of occurrences of words to exclude. Defaults to 5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of stop words</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.save_plot">
+<span class="sig-name descname"><span class="pre">save_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#nlplot.NLPlot.save_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the HTML file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig</strong> (<em>fig</em>) – Figure to be saved</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – File name to save</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.save_tables">
+<span class="sig-name descname"><span class="pre">save_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#nlplot.NLPlot.save_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Storing a data frame</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.sunburst">
+<span class="sig-name descname"><span class="pre">sunburst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'betweeness_centrality'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_continuous_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Oryel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">plotly.express._chart_types.sunburst</span><a class="headerlink" href="#nlplot.NLPlot.sunburst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots of sunburst chart</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – title of plot</p></li>
+<li><p><strong>colorscale</strong> (<em>bool</em>) – Size of the maker</p></li>
+<li><p><strong>color_col</strong> (<em>str</em>) – Color-coded column names.</p></li>
+<li><p><strong>color_continuous_scale</strong> (<em>str</em>) – cf.https://plotly.com/python/builtin-colorscales/</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – width of the graph</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – height of the graph</p></li>
+<li><p><strong>save</strong> (<em>bool</em>) – Whether or not to save the HTML file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Figure of a sunburst graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>px.sunburst</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.treemap">
+<span class="sig-name descname"><span class="pre">treemap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopwords</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">plotly.express._chart_types.treemap</span><a class="headerlink" href="#nlplot.NLPlot.treemap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots of Tree Map</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – title of plot. Defaults to None.</p></li>
+<li><p><strong>ngram</strong> (<em>int</em><em>, </em><em>optional</em>) – N number of N grams. Defaults to 1.</p></li>
+<li><p><strong>top_n</strong> (<em>int</em><em>, </em><em>optional</em>) – How many words should be output. Defaults to 50.</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – width of the graph. Defaults to 1300.</p></li>
+<li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – height of the graph. Defaults to 600.</p></li>
+<li><p><strong>stopwords</strong> (<em>list os str</em><em>, </em><em>optional</em>) – A list of words to specify for the stopword. Defaults to [].</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to output the log by tqdm. Defaults to True.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to save the HTML file. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Figure of a treemap graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>px.treemap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.word_distribution">
+<span class="sig-name descname"><span class="pre">word_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis_label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis_label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'plotly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">plotly.express._chart_types.histogram</span><a class="headerlink" href="#nlplot.NLPlot.word_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots of word count histogram</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – title of plot. Defaults to None.</p></li>
+<li><p><strong>xaxis_label</strong> (<em>str</em><em>, </em><em>optional</em>) – x-axis label name. Defaults to ‘’.</p></li>
+<li><p><strong>yaxis_label</strong> (<em>str</em><em>, </em><em>optional</em>) – y-axis label name. Defaults to ‘’.</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – width of the graph. Defaults to 100.</p></li>
+<li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – height of the graph. Defaults to 600.</p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – color of the chart. Defaults to None.</p></li>
+<li><p><strong>template</strong> (<em>str</em><em>, </em><em>optional</em>) – The plotly drawing style. Defaults to ‘plotly’.</p></li>
+<li><p><strong>bins</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of bins. Defaults to None.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to save the HTML file. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Figure of a bar graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>px.histogram</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nlplot.NLPlot.wordcloud">
+<span class="sig-name descname"><span class="pre">wordcloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_words</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_font_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopwords</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#nlplot.NLPlot.wordcloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots of WordCloud</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – width of the graph. Defaults to 800.</p></li>
+<li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – height of the graph. Defaults to 500.</p></li>
+<li><p><strong>max_words</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of words to display. Defaults to 100.</p></li>
+<li><p><strong>max_font_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of words to be displayed. Defaults to 80.</p></li>
+<li><p><strong>stopwords</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of words to specify for the stopword.. Defaults to [].</p></li>
+<li><p><strong>colormap</strong> (<em>str</em><em>, </em><em>optional</em>) – cf.https://karupoimou.hatenablog.com/entry/2019/05/17/153207. Defaults to None.</p></li>
+<li><p><strong>mask_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Image to be masked file. Defaults to None.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to save the Image file. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nlplot.generate_freq_df">
+<span class="sig-prename descclassname"><span class="pre">nlplot.</span></span><span class="sig-name descname"><span class="pre">generate_freq_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.series.Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_gram</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopwords</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">pandas.core.frame.DataFrame</span><a class="headerlink" href="#nlplot.generate_freq_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a data frame of frequent word</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>pd.Series</em>) – Separated by space values.</p></li>
+<li><p><strong>n_gram</strong> (<em>int</em><em>, </em><em>optional</em>) – N number of N grams. Dafaults to 1.</p></li>
+<li><p><strong>top_n</strong> (<em>int</em><em>, </em><em>optional</em>) – N to get TOP N. Dafaults to 50.</p></li>
+<li><p><strong>stopwords</strong> (<em>list of str</em><em>, </em><em>optional</em>) – A list of words to specify for the stopword.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to output the log by tqdm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>frequent word DataFrame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nlplot.get_colorpalette">
+<span class="sig-prename descclassname"><span class="pre">nlplot.</span></span><span class="sig-name descname"><span class="pre">get_colorpalette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colorpalette</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_colors</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#nlplot.get_colorpalette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a color palette</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>colorpalette</strong> (<em>str</em>) – cf.https://qiita.com/SaitoTsutomu/items/c79c9973a92e1e2c77a7 .</p></li>
+<li><p><strong>n_colors</strong> (<em>int</em>) – Number of colors to be displayed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>e.g. [‘rgb(220.16,95.0272,87.03)’, ‘rgb(220.16,209.13005714285714,87.03)’, …]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Takanobu Nozawa.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
