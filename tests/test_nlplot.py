@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from nlplot import NLPlot, get_colorpalette, freq_df
+from nlplot import NLPlot, get_colorpalette, generate_freq_df
 
 
 @pytest.fixture
@@ -47,8 +47,8 @@ def test_freq_df(apply_space, n_gram, top_n):
     stop_words = []
     verbose = False
     df = apply_space
-    word_frequency = freq_df(df, n_gram=n_gram, n=top_n,
-                             stopwords=stop_words, verbose=verbose)
+    word_frequency = generate_freq_df(df, n_gram=n_gram, top_n=top_n,
+                                      stopwords=stop_words, verbose=verbose)
     expect_columns = ["word", "word_count"]
     assert isinstance(word_frequency, pd.DataFrame)
     assert word_frequency.ndim == 2
