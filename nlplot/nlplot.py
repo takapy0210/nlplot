@@ -97,14 +97,17 @@ class NLPlot():
         default_stopwords_file_path: The path to the file that defines the default stopword
 
     """
-    def __init__(self, df: pd.DataFrame, target_col: str, output_file_path: str = './',
-                 default_stopwords_file_path: str = ''):
+    def __init__(
+        self, df: pd.DataFrame,
+        target_col: str,
+        output_file_path: str = './',
+        default_stopwords_file_path: str = ''
+    ):
         self.df = df.copy()
         self.target_col = target_col
         self.df.dropna(subset=[self.target_col], inplace=True)
         if type(self.df[self.target_col].iloc[0]) is not list:
             self.df.loc[:, self.target_col] = self.df[self.target_col].map(lambda x: x.split())
-        self.df.loc[:, self.target_col + '_length'] = self.df[self.target_col].map(lambda x: len(x))
         self.output_file_path = output_file_path
         self.default_stopwords = []
         if os.path.exists(default_stopwords_file_path):
@@ -113,7 +116,7 @@ class NLPlot():
             f.close()
             self.default_stopwords = [line.strip() for line in txt_file]
 
-    def get_stopword(self, top_n=10, min_freq=5) -> list:
+    def get_stopword(self, top_n: int = 10, min_freq: int = 5) -> list:
         """Calculate the stop word.
 
         Calculate the top_n words with the highest number of occurrences
@@ -139,14 +142,27 @@ class NLPlot():
         stopwords = list(common_words.union(rare_words))
         return stopwords
 
-    def bar_ngram(self, title=None, xaxis_label='', yaxis_label='', n_gram=1, top_n=50, width=800, height=1100,
-                  color=None, horizon=True, stopwords=[], verbose=True, save=False) -> px.bar:
+    def bar_ngram(
+        self,
+        title: str = None,
+        xaxis_label: str = '',
+        yaxis_label: str = '',
+        ngram: int = 1,
+        top_n: int = 50,
+        width: int = 800,
+        height: int = 1100,
+        color: str = None,
+        horizon: bool = True,
+        stopwords: list = [],
+        verbose: bool = True,
+        save: bool = False
+    ) -> px.bar:
         """Plots of n-gram bar chart
 
         Args:
-            title (str, optional): title of plot.
-            xaxis_label (str, optional): x-axis label name.
-            yaxis_label (str, optional): y-axis label name.
+            title (str, optional): title of plot. Defaults to None.
+            xaxis_label (str, optional): x-axis label name. Defaults to ''.
+            yaxis_label (str, optional): y-axis label name. Defaults to ''.
             n_gram (int, optional): N number of N grams. Defaults to 1.
             top_n (int, optional): How many words should be output. Defaults to 50.
             width (int, optional): width of the graph. Defaults to 800.
@@ -167,7 +183,7 @@ class NLPlot():
         self.ngram_df.loc[:, 'space'] = self.ngram_df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
-        self.ngram_df = generate_freq_df(self.ngram_df['space'], n_gram=n_gram, top_n=top_n,
+        self.ngram_df = generate_freq_df(self.ngram_df['space'], n_gram=ngram, top_n=top_n,
                                          stopwords=stopwords, verbose=verbose)
 
         if horizon:
@@ -200,19 +216,28 @@ class NLPlot():
 
         return fig
 
-    def treemap(self, title=None, n_gram=1, top_n=50,
-                width=1300, height=600, stopwords=[], verbose=True, save=False) -> px.treemap:
+    def treemap(
+        self,
+        title: str = None,
+        ngram: int = 1,
+        top_n: int = 50,
+        width: int = 1300,
+        height: int = 600,
+        stopwords: list = [],
+        verbose: bool = True,
+        save: bool = False
+    ) -> px.treemap:
         """Plots of Tree Map
 
         Args:
-            title (str): title of plot
-            n_gram (int): N number of N grams
-            top_n (int): How many words should be output
-            width (int): width of the graph
-            height (int): height of the graph
-            stopwords (list): A list of words to specify for the stopword
-            verbose (bool): Whether or not to output the log by tqdm
-            save (bool): Whether or not to save the HTML file.
+            title (str, optional): title of plot. Defaults to None.
+            ngram (int, optional): N number of N grams. Defaults to 1.
+            top_n (int, optional): How many words should be output. Defaults to 50.
+            width (int, optional): width of the graph. Defaults to 1300.
+            height (int, optional): height of the graph. Defaults to 600.
+            stopwords (list os str, optional): A list of words to specify for the stopword. Defaults to [].
+            verbose (bool, optional): Whether or not to output the log by tqdm. Defaults to True.
+            save (bool, optional): Whether or not to save the HTML file. Defaults to False.
 
         Returns:
             px.treemap: Figure of a treemap graph
@@ -224,7 +249,7 @@ class NLPlot():
         self.treemap_df.loc[:, 'space'] = self.treemap_df[self.target_col].apply(lambda x: ' '.join(x))
 
         # word count
-        self.treemap_df = generate_freq_df(self.treemap_df['space'], n_gram=n_gram, top_n=top_n,
+        self.treemap_df = generate_freq_df(self.treemap_df['space'], n_gram=ngram, top_n=top_n,
                                            stopwords=stopwords, verbose=verbose)
 
         fig = px.treemap(
@@ -243,30 +268,36 @@ class NLPlot():
 
         return fig
 
-    def word_distribution(self, title=None,
-                          xaxis_label='', yaxis_label='',
-                          width=1000, height=600,
-                          color=None, template='plotly',
-                          bins=None, save=False) -> px.histogram:
+    def word_distribution(
+        self,
+        title: str = None,
+        xaxis_label: str = '',
+        yaxis_label: str = '',
+        width: int = 1000,
+        height: int = 600,
+        color: str = None,
+        template: str = 'plotly',
+        bins: int = None,
+        save: bool = False
+    ) -> px.histogram:
         """Plots of word count histogram
 
         Args:
-            title (str): title of plot
-            xaxis_label (str): x-axis label name
-            yaxis_label (str): y-axis label name
-            width (int): width of the graph
-            height (int): height of the graph
-            color (str): color of the chart
-            template (str): The plotly drawing style
-            bins (int): Number of bins
-            save (bool): Whether or not to save the HTML file.
+            title (str, optional): title of plot. Defaults to None.
+            xaxis_label (str, optional): x-axis label name. Defaults to ''.
+            yaxis_label (str, optional): y-axis label name. Defaults to ''.
+            width (int, optional): width of the graph. Defaults to 100.
+            height (int, optional): height of the graph. Defaults to 600.
+            color (str, optional): color of the chart. Defaults to None.
+            template (str, optional): The plotly drawing style. Defaults to 'plotly'.
+            bins (int, optional): Number of bins. Defaults to None.
+            save (bool, optional): Whether or not to save the HTML file. Defaults to False.
 
         Returns:
             px.histogram: Figure of a bar graph
         """
-        _df = self.df.copy()
-        fig = px.histogram(_df, x=self.target_col+'_length',
-                           color=color, template=template, nbins=bins)
+        self.df.loc[:, self.target_col + '_length'] = self.df[self.target_col].map(lambda x: len(x))
+        fig = px.histogram(self.df, x=self.target_col+'_length', color=color, template=template, nbins=bins)
         fig.update_layout(
             title=str(title),
             xaxis_title=str(xaxis_label),
@@ -277,24 +308,30 @@ class NLPlot():
         if save:
             self.save_plot(fig, title)
 
-        del _df
-        gc.collect()
         return fig
 
-    def wordcloud(self, width=800, height=500,
-                  max_words=100, max_font_size=80, stopwords=[],
-                  colormap=None, mask_file=None, save=False) -> None:
+    def wordcloud(
+        self,
+        width: int = 800,
+        height: int = 500,
+        max_words: int = 100,
+        max_font_size: int = 80,
+        stopwords: list = [],
+        colormap: str = None,
+        mask_file: str = None,
+        save: bool = False
+    ) -> None:
         """Plots of WordCloud
 
         Args:
-            width (int): width of the graph
-            height (int): height of the graph
-            max_words: Number of words to display
-            max_font_size: Size of words to be displayed
-            stopwords (list): A list of words to specify for the stopword.
-            colormap (str): cf.https://karupoimou.hatenablog.com/entry/2019/05/17/153207
-            mask_file (str): Image to be masked file
-            save (bool): Whether or not to save the Image file.
+            width (int, optional): width of the graph. Defaults to 800.
+            height (int, optional): height of the graph. Defaults to 500.
+            max_words (int, optional): Number of words to display. Defaults to 100.
+            max_font_size (int, optional): Size of words to be displayed. Defaults to 80.
+            stopwords (list, optional): A list of words to specify for the stopword.. Defaults to [].
+            colormap (str, optional): cf.https://karupoimou.hatenablog.com/entry/2019/05/17/153207. Defaults to None.
+            mask_file (str, optional): Image to be masked file. Defaults to None.
+            save (bool, optional): Whether or not to save the Image file. Defaults to False.
 
         Returns:
             None
@@ -307,8 +344,7 @@ class NLPlot():
         else:
             mask = None
 
-        _df = self.df.copy()
-        text = _df[self.target_col]
+        text = self.df[self.target_col]
         stopwords += self.default_stopwords
 
         wordcloud = WordCloud(
@@ -338,11 +374,9 @@ class NLPlot():
                                     Image(data=stream.getvalue()))
 
         img = wordcloud.to_array()
-        show_array(img)
+        # show_array(img)
 
-        del _df
-        gc.collect()
-        return None
+        return show_array(img)
 
     def get_edges_nodes(self, batches, min_edge_frequency) -> None:
         """Generating the Edge and Node data frames for a graph
@@ -354,7 +388,6 @@ class NLPlot():
 
         Returns:
             None
-
         """
 
         def _ranked_topics(batches):
@@ -701,7 +734,6 @@ class NLPlot():
 
         Returns:
             None
-
         """
         date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
         filename = date + '_' + str(title) + '.html'
