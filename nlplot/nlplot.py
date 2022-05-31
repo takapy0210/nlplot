@@ -368,7 +368,9 @@ class NLPlot():
         def show_array(img):
             stream = BytesIO()
             if save:
-                Image.fromarray(img).save('wordcloud.png')
+                date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
+                filename = date + '_wordcloud.png'
+                Image.fromarray(img).save(self.output_file_path + filename)
             Image.fromarray(img).save(stream, 'png')
             IPython.display.display(IPython.display.
                                     Image(data=stream.getvalue()))
