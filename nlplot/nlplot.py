@@ -3,7 +3,6 @@
 import os
 import gc
 import itertools
-import IPython.display
 from io import BytesIO
 from PIL import Image
 from collections import defaultdict, Counter
@@ -17,7 +16,6 @@ import seaborn as sns
 import plotly
 import plotly.graph_objs as go
 import plotly.express as px
-from plotly.offline import iplot
 from wordcloud import WordCloud
 import networkx as nx
 from networkx.algorithms import community
@@ -95,14 +93,10 @@ class NLPlot():
         target_col: Columns to be analyzed that exist in df (assuming type list) e.g. [hoge, fuga, ...]
         output_file_path: path to save the html file of the generated graph
         default_stopwords_file_path: The path to the file that defines the default stopword
-
     """
-    def __init__(
-        self, df: pd.DataFrame,
-        target_col: str,
-        output_file_path: str = './',
-        default_stopwords_file_path: str = ''
-    ):
+
+    def __init__(self, df: pd.DataFrame, target_col: str,
+                 output_file_path: str = './', default_stopwords_file_path: str = ''):
         self.df = df.copy()
         self.target_col = target_col
         self.df.dropna(subset=[self.target_col], inplace=True)
@@ -320,7 +314,7 @@ class NLPlot():
         colormap: str = None,
         mask_file: str = None,
         save: bool = False
-    ) -> None:
+    ) -> WordCloud:
         """Plots of WordCloud
 
         Args:
@@ -334,8 +328,7 @@ class NLPlot():
             save (bool, optional): Whether or not to save the Image file. Defaults to False.
 
         Returns:
-            None
-
+            WordCloud
         """
 
         f_path = TTF_FILE_NAME
@@ -348,36 +341,36 @@ class NLPlot():
         stopwords += self.default_stopwords
 
         wordcloud = WordCloud(
-                        background_color='white',
-                        font_step=1,
-                        contour_width=0,
-                        contour_color='steelblue',
-                        font_path=f_path,
-                        stopwords=stopwords,
-                        max_words=max_words,
-                        max_font_size=max_font_size,
-                        random_state=42,
-                        width=width,
-                        height=height,
-                        mask=mask,
-                        collocations=False,
-                        prefer_horizontal=1,
-                        colormap=colormap)
-        wordcloud.generate(' '.join(list(itertools.chain(*list(text)))))
+            background_color='white',
+            font_step=1,
+            contour_width=0,
+            contour_color='steelblue',
+            font_path=f_path,
+            stopwords=stopwords,
+            max_words=max_words,
+            max_font_size=max_font_size,
+            random_state=42,
+            width=width,
+            height=height,
+            mask=mask,
+            collocations=False,
+            prefer_horizontal=1,
+            colormap=colormap)
+        wordcloud = wordcloud.generate(' '.join(list(itertools.chain(*list(text)))))
 
-        def show_array(img):
-            stream = BytesIO()
-            if save:
-                date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
-                filename = date + '_wordcloud.png'
-                Image.fromarray(img).save(self.output_file_path + filename)
-            Image.fromarray(img).save(stream, 'png')
-            IPython.display.display(IPython.display.
-                                    Image(data=stream.getvalue()))
+        if save:
+            def save_array(img):
+                stream = BytesIO()
+                if save:
+                    date = str(pd.to_datetime(datetime.datetime.now())).split(' ')[0]
+                    filename = date + '_wordcloud.png'
+                    Image.fromarray(img).save(self.output_file_path + filename)
+                Image.fromarray(img).save(stream, 'png')
 
-        img = wordcloud.to_array()
+            img = wordcloud.to_array()
+            save_array(img)
 
-        return show_array(img)
+        return wordcloud
 
     def get_edges_nodes(self, batches, min_edge_frequency) -> None:
         """Generating the Edge and Node data frames for a graph
@@ -546,7 +539,7 @@ class NLPlot():
 
     def co_network(self, title, sizing=100, node_size='adjacency_frequency',
                    color_palette='hls', layout=nx.kamada_kawai_layout,
-                   light_theme=True, width=1700, height=1200, save=False) -> None:
+                   light_theme=True, width=1700, height=1200, save=False) -> go:
         """Plots of co-occurrence networks
 
         Args:
@@ -561,8 +554,7 @@ class NLPlot():
             save (bool): Whether or not to save the HTML file.
 
         Returns:
-            None
-
+            plotly.graph_objs
         """
 
         # formatting options for plot - dark vs. light theme
@@ -670,14 +662,13 @@ class NLPlot():
                           plot_bgcolor=back_col,  # set background color
                           )
         }
-        iplot(fig)
 
         if save:
             self.save_plot(fig, title)
 
         del _df
         gc.collect()
-        return None
+        return fig
 
     def sunburst(self, title, colorscale=False, color_col='betweeness_centrality',
                  color_continuous_scale='Oryel', width=1100, height=1100, save=False) -> px.sunburst:
